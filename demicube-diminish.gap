@@ -121,7 +121,7 @@ end;
 
 # Diminish an E6 polytope. k can be "c" or "m".
 E6x2Diminish := function(k)
-    local gens, invert, invertv, vert, adj, illegalc;
+    local gens, G, invert, invertv, vert, adj, illegalc;
     gens := [
         (1,4,21,6,7)(2,26,17,11,20)(3,19,9,13,14)(8,16,27,10,22)(12,24,18,23,25),
         (1,19)(2,18,16,10)(3,6,7,14)(4,9)(8,12,15,24)(11,23,26,17)(13,21)(20,27,22,25),
