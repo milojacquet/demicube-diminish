@@ -1,6 +1,7 @@
 PolyDiminish := function(G, vert, adj, illegalc)
     local verts, adjacent, illegalcs, seen, isDiminishment;
     verts := Orbit(G, vert, OnSets);
+    Print(Length(verts), " vertices total\n");
     adjacent := Set(Orbit(G, adj, OnSetsSets));
     # one vertex is assumed to be present
     illegalcs := Orbit(G, illegalc, OnSetsSets);
@@ -237,6 +238,43 @@ E8Diminish := function(k)
     elif k = "m" then
         vert := [1, 2, 7, 10, 14];
         adj := [[1, 2, 7, 10, 14], [1, 2, 7, 10, 19]];
+        illegalc := [vert];
+    else
+        Error("invalid parameters");
+    fi;
+    PolyDiminish(G, vert, adj, illegalc);
+end;
+
+# Diminish the 24-cell
+F4Diminish := function()
+    local G, vert, adj, illegalc;
+    G := Group(
+        (1,19,7,14,6,13,5,18)(2,24,11,21,3,23,9,22)(4,16,20,10,12,15,17,8),
+        (1,22,17)(2,24,4,9,18,8)(3,23,12,11,14,10)(5,13,16)(6,21,20)(7,19,15)
+    );
+    vert := [1];
+    adj := [[1], [10]];
+    illegalc := [vert];
+    PolyDiminish(G, vert, adj, illegalc);
+end;
+
+# Diminish the k-rectified 600-cell
+H4Diminish := function(k)
+    local G, vert, adj, illegalc;
+    G := Group(
+        (1,54,82,50,64,23)(2,117,110)(3,100,46,11,65,109)(4,32,9,53,22,69)(5,104,52,14,60,113)(6,42,73,27,59,25)(7,29,10,40,24,81)(8,21)(12,116,112)(13,96,114,39,106,87)(15,88,111,37,97,93)(16,92,
+        108,26,94,47)(17,101,91)(18,61,70,49,56,119)(19,105,85)(20,66,76,44,62,120)(28,77)(30,95,51,98,57,48)(31,71)(33,86,102,36,89,41)(34,83,45,107,63,43)(35,103,75)(38,99,80)(55,84,78)(58,118,
+        79)(67,90,72)(68,115,74), (1,105,113,24,66,33,70,69,86,38)(2,47,107,114,3,48,58,112,50,84)(4,94,67,46,64,115,18,23,97,91)(5,43,68,110,27,90,12,41,98,111)(6,101,109,22,61,16,76,81,92,
+        35)(7,89,55,52,59,118,20,25,106,85)(8,117,44,9,104,83,28,29,96,75)(10,100,95,31,32,88,80,21,116,49)(11,34,119,73,62)(13,78,102,45,19)(14,30,120,82,56)(15,72,108,51,17)(26,93)(36,87)(37,
+        74)(39,79)(40,60,71,54,99)(42,103,53,65,77)(57,63)
+    );
+    if k = 0 then
+        vert := [1];
+        adj := [[1], [9]];
+        illegalc := adj;
+    elif k = 1 then
+        vert := [1, 9];
+        adj := [[1, 9], [1, 21]];
         illegalc := [vert];
     else
         Error("invalid parameters");
