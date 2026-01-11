@@ -1,5 +1,5 @@
 PolyDiminish := function(G, vert, adj, illegalc, args...)
-    local Gsub, verts, adjacent, illegalcs, seen, isDiminishment;
+    local Gsub, verts, adjacent, illegalcs, vs, seennc, seen, isDiminishment;
     if Length(args) > 0 then
         Gsub := args[1];
     else
@@ -10,10 +10,11 @@ PolyDiminish := function(G, vert, adj, illegalc, args...)
     adjacent := Set(Orbit(G, adj, OnSetsSets));
     # one vertex is assumed to be present
     illegalcs := Orbit(G, illegalc, OnSetsSets);
+    seennc := [];
     seen := [];
 
     isDiminishment := function(H)
-        local vos, anygood, keepi, checki, good, v, adjs, canon, sym;
+        local vos, anygood, keepi, checki, good, v, adjs, canon, trycanon, g, sym;
         vos := OrbitsDomain(H, verts, OnSets);
         anygood := false;
         # for one representative vertex in each orbit, check whether not diminishing one other orbit gives an illegal configuration
@@ -34,12 +35,20 @@ PolyDiminish := function(G, vert, adj, illegalc, args...)
             od;
             if not good then continue; fi;
             anygood := true;
-            canon := Minimum(Orbit(G, Set(vos[keepi]), OnSetsSets));
-            if not (canon in seen) then
-                AddSet(seen, canon);
-                sym := Stabilizer(G, Set(vos[keepi]), OnSetsSets);
-                Print(Length(vos[keepi]), " vertices (order ", Size(sym), "): ", vos[keepi][1], " with ", GeneratorsOfGroup(H), "\n");
-            fi;
+            vs := Set(vos[keepi]);
+            if vs in seennc then continue; fi;
+            AddSet(seennc, vs);
+
+            canon := [[9999999]];
+            sym := Stabilizer(G, vs, OnSetsSets);
+            for g in RightTransversal(G, sym) do
+                trycanon := OnSetsSets(vs, g);
+                if trycanon < canon then canon := trycanon; fi;
+            od;
+            if canon in seen then continue; fi;
+            AddSet(seen, canon);
+
+            Print(Length(vs), " vertices (order ", Size(sym), "): ", vs[1], " with ", GeneratorsOfGroup(H), "\n");
         od;
         return anygood;
     end;
