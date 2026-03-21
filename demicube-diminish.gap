@@ -498,7 +498,7 @@ Cell4900Diminish := function(k)
     PolyDiminish(G, vert, adj, illegalc);
 end;
 
-# Diminish the k-rectified 4900-cell (abstract)
+# Diminish the k-rectified 78000-[5]tope (abstract)
 Poly78000Diminish := function(k)
     local G, vert, adj, illegalc;
     G := Group(
